@@ -132,6 +132,29 @@ const PromptPanel = () => {
         }
     };
 
+    function handleCopyPrompt(text) {
+        // Create a textarea element to temporarily hold the text
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+      
+        // Append the textarea to the DOM
+        document.body.appendChild(textarea);
+      
+        // Select the text in the textarea
+        textarea.select();
+      
+        // Copy the selected text to the clipboard
+        document.execCommand('copy');
+      
+        // Remove the textarea from the DOM
+        document.body.removeChild(textarea);
+      
+        // Optionally, provide user feedback (e.g., toast message)
+        // You can use a library like react-toastify for this purpose
+        // Example: toast.success('Text copied to clipboard', { position: 'bottom-right' });
+      }
+      
+
 
     return (
         <div className="container mx-auto p-4">
@@ -212,19 +235,35 @@ const PromptPanel = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 {filteredPrompts.map((p, index) => (
-                    <div key={index} className="p-2 border flex flex-col rounded-md">
+                    <div key={index} className="p-2 border flex flex-col rounded-md relative">
                         <span className="font-bold">Prompt:</span>
                         <p className="mb-2">{p.text}</p>
                         <span className="font-bold">Category:</span>
                         <p className="mb-2">{p.category}</p>
-                        <div className="flex justify-start items-center">
-                            <button onClick={() => handleEdit(index)} className="bg-green-500 text-white px-3 mr-2">Edit</button>
-                            <button onClick={() => handleDeletePrompt(index)} className="bg-red-500 text-white px-3 ml-2">Delete</button>
+                        <div className="mt-auto flex justify-start items-center space-x-2  bottom-2 left-2">
+                            <button
+                                onClick={() => handleEdit(index)}
+                                className="bg-green-500 text-white px-3"
+                            >
+                                Edit
+                            </button>
+                            <button
+                                onClick={() => handleDeletePrompt(index)}
+                                className="bg-red-500 text-white px-3"
+                            >
+                                Delete
+                            </button>
+                            <button
+                                onClick={() => handleCopyPrompt(p.text)}
+                                className="bg-blue-500 text-white px-3"
+                            >
+                                Copy
+                            </button>
                         </div>
-
                     </div>
                 ))}
             </div>
+
         </div>
     );
 };
